@@ -1,8 +1,9 @@
 const button = document.querySelector('button');
 const container = document.querySelector('.container');
 const input = document.querySelector('input');
+
 button.addEventListener('click', () => {
-	const value = input.value;
+	let value = input.value;
 	fetch(`https://www.omdbapi.com/?s=${value}&page=1&apikey=d718772`)
 		.then((Response) => {
 			if (Response.ok) {
@@ -11,14 +12,17 @@ button.addEventListener('click', () => {
 				throw new Error('Error:', Response.status);
 			}
 		})
-		.then((Data) => ShowMovie(Data))
+		.then((Data) => {
+			ShowMovie(Data);
+
+			input.value = '';
+		})
 		.catch((Error) => {
 			console.error(Error);
 		});
 });
 
 function ShowMovie(Data) {
-	console.log(Data);
 	if (Data.Response == 'True') {
 		const { Search } = Data;
 		const DeleteButton = document.createElement('button');
